@@ -4,12 +4,12 @@ import (
 	"context"
 	"os"
 
-	//"strings"
+	"strings"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/nbedregal/gambit/awsgo"
 	"github.com/nbedregal/gambit/bd"
-
-	//	"github.com/nbedregal/gambit/handlers"
+	"github.com/nbedregal/gambit/handlers"
 
 	lambda "github.com/aws/aws-lambda-go/lambda"
 )
@@ -23,28 +23,27 @@ func EjecutoLambda(ctx context.Context, request events.APIGatewayV2HTTPRequest) 
 	awsgo.InicializoAWS()
 
 	if !ValidoParametros() {
-		panic("Error en los parámetros. Debe enviar 'SecretName', 'UserPoolId', 'Region', 'UrlPrefix'")
+		panic("Error en los parámetros. Debe enviar 'SecretName', 'UrlPrefix'")
 	}
 
 	var res *events.APIGatewayProxyResponse
-	//prefix := os.Getenv("UrlPrefix")
-	/*path := strings.Replace(request.RawPath, prefix, "", -1)
+	path := strings.Replace(request.RawPath, os.Getenv("UrlPrefix"), "", -1)
 	method := request.RequestContext.HTTP.Method
 	body := request.Body
-	header := request.Headers*/
+	header := request.Headers
 
 	bd.ReadSecret()
 
-	//TODO confirmación
+	status, message := handlers.Manejadores(path, method, body, header, request)
 
 	headersResp := map[string]string{
 		"Content-Type": "application/json",
 	}
 
 	res = &events.APIGatewayProxyResponse{
-		//StatusCode: status,
-		//Body: string(message),
-		Headers: headersResp,
+		StatusCode: status,
+		Body:       string(message),
+		Headers:    headersResp,
 	}
 
 	return res, nil
@@ -52,14 +51,6 @@ func EjecutoLambda(ctx context.Context, request events.APIGatewayV2HTTPRequest) 
 
 func ValidoParametros() bool {
 	_, traeParametros := os.LookupEnv("SecretName")
-	if !traeParametros {
-		return traeParametros
-	}
-	_, traeParametros = os.LookupEnv("UserPoolId")
-	if !traeParametros {
-		return traeParametros
-	}
-	_, traeParametros = os.LookupEnv("Region")
 	if !traeParametros {
 		return traeParametros
 	}
