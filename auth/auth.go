@@ -52,6 +52,6 @@ func ValidoToken(token string) (bool, error, string) {
 		return false, nil, "Token expirado"
 	}
 
-	return true, nil, string(tkj.Username)
+	return true, nil, string(tkj.Sub)
 
 }

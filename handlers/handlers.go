@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/nbedregal/gambit/auth"
+	"github.com/nbedregal/gambit/routers"
 )
 
 func Manejadores(path string, method string, body string, header map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -20,8 +21,8 @@ func Manejadores(path string, method string, body string, header map[string]stri
 	if !isOk {
 		return statusCode, user
 	}
-
-	switch path[0:4] {
+	// /category
+	switch path[1:5] {
 	case "user":
 		return ProcesoUsers(body, path, method, user, id, request)
 	case "prod":
@@ -62,7 +63,7 @@ func validoAuthorization(path string, method string, headers map[string]string) 
 		}
 	}
 
-	fmt.Println("Token OK")
+	fmt.Println("Token OK " + token + " - " + msg)
 	return true, 200, msg
 
 }
@@ -80,6 +81,12 @@ func ProcesoAddress(body string, path string, method string, user string, id int
 	return 400, "Method invalid"
 }
 func ProcesoCategory(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+
+	switch method {
+	case "POST":
+		return routers.InsertCategory(body, user)
+	}
+
 	return 400, "Method invalid"
 }
 func ProcesoOrder(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
