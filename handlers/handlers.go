@@ -75,12 +75,12 @@ func ProcesoProducts(body string, path string, method string, user string, id in
 	switch method {
 	case "POST":
 		return routers.InsertProduct(body, user)
-		/*case "PUT":
-			return routers.UpdateCategory(body, user, id)
-		case "DELETE":
-			return routers.DeleteCategory(body, user, id)
-		case "GET":
-			return routers.SelectCategories(body, request)*/
+	case "PUT":
+		return routers.UpdateProduct(body, user, id)
+	case "DELETE":
+		return routers.DeleteProduct(body, user, id)
+		/*case "GET":
+		return routers.SelectProduct(body, request)*/
 	}
 	return 400, "Method invalid"
 }
