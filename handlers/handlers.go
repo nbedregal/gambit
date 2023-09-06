@@ -69,6 +69,18 @@ func validoAuthorization(path string, method string, headers map[string]string) 
 }
 
 func ProcesoUsers(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	fmt.Println("Path: " + path)
+	if path == "/user/me" {
+		switch method {
+		case "PUT":
+			return routers.UpdateUser(body, user)
+			/*case "DELETE":
+				return routers.DeleteProduct(body, user, id)
+			case "GET":
+				return routers.SelectProduct(request)*/
+		}
+	}
+
 	return 400, "Method invalid"
 }
 func ProcesoProducts(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
