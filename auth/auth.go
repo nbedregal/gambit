@@ -9,17 +9,26 @@ import (
 )
 
 type TokenJSON struct {
-	Sub       string
-	Event_Id  string
-	Token_use string
-	Scope     string
-	Auth_time int
-	Iss       string
-	Exp       int
-	Iat       int
-	Client_id string
-	Username  string
+	Sub string
+	Exp int
 }
+
+/* Payload - https://jwt.io/#debugger-io
+type TokenJSON struct {
+	At_hash        string
+	Sub            string
+	Email_verified bool
+	Iss            string
+	Username       string
+	Aud            string
+	Event_id       string
+	Token_use      string
+	Auth_time      int
+	Exp            int
+	Iat            int
+	Jti            string
+	Email          string
+}*/
 
 func ValidoToken(token string) (bool, error, string) {
 	parts := strings.Split(token, ".")
@@ -38,6 +47,7 @@ func ValidoToken(token string) (bool, error, string) {
 
 	var tkj TokenJSON
 	err = json.Unmarshal(userInfo, &tkj)
+
 	if err != nil {
 		fmt.Println("No se puede decodificar en la estructura JSON", err.Error())
 		return false, err, err.Error()

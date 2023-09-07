@@ -74,10 +74,14 @@ func ProcesoUsers(body string, path string, method string, user string, id strin
 		switch method {
 		case "PUT":
 			return routers.UpdateUser(body, user)
-			/*case "DELETE":
-				return routers.DeleteProduct(body, user, id)
-			case "GET":
-				return routers.SelectProduct(request)*/
+		case "GET":
+			return routers.SelectUser(body, user)
+		}
+	}
+	if path == "/users" {
+		switch method {
+		case "GET":
+			return routers.SelectUsers(body, user, request)
 		}
 	}
 
