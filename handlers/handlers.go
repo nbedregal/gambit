@@ -132,5 +132,12 @@ func ProcesoCategory(body string, path string, method string, user string, id in
 	return 400, "Method invalid"
 }
 func ProcesoOrder(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+	switch method {
+	case "POST":
+		return routers.InsertOrder(body, user)
+	case "GET":
+		return routers.SelectOrders(user, request)
+	}
+
 	return 400, "Method invalid"
 }
