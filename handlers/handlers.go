@@ -104,6 +104,15 @@ func ProcesoStock(body string, path string, method string, user string, id int, 
 	return routers.UpdateStock(body, user, id)
 }
 func ProcesoAddress(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+	switch method {
+	case "POST":
+		return routers.InsertAddress(body, user)
+	case "PUT":
+		return routers.UpdateAddress(body, user, id)
+	case "DELETE":
+		return routers.DeleteAddress(user, id)
+	}
+
 	return 400, "Method invalid"
 }
 func ProcesoCategory(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
